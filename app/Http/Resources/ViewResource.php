@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BlogResource extends JsonResource
+class ViewResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +16,12 @@ class BlogResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'subject'=> $this->subject,
-            'content'=> $this->content,
-            'blog' =>  BlogResource::collection($this->whenLoaded('blog')),
+            'subject'=>$this->subject,
+            'content'=>$this->content,
+            'user_id'=>$this->user_id,
+            'views_count'=>$this->views_count,
+            'views'=>$this->views,
+            
 
         ];
     }

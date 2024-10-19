@@ -19,12 +19,12 @@ class Blog extends Model
         return $this->belongsTo(User::class,'id');
     }
     
-    public function likeBlogs(){
+    public function likes(){
         return $this->belongsToMany(User::class, 'likes', 'blog_id', 'user_id')->withTimestamps();
     }
 
 
-    public function BlogViews(){
+    public function Views(){
         return $this->belongsToMany(User::class,'blog_views','blog_id','vistor_id')->withTimestamps();
     }
 

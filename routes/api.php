@@ -10,57 +10,52 @@ use App\Http\Controllers\BlogViewController;
 
 use App\Models\User;
 
-// Route::get('user/{show}',[BlogController::class,'Showprofile']);
-
- 
-// Route::get('/users', function () {
-//     return UserResource::collection(User::all());
-// });
 
 
 //user
-Route::post('users',[UserController::class,'creatUser']);
+Route::post('users', [UserController::class, 'store']);
 
 Route::post('login', [UserController::class, 'login'])->name('login');
 
-Route::get('user/show',[UserController::class,'ShowProfile'])->middleware('auth:sanctum');
+Route::get('user/show', [UserController::class, 'Show'])->middleware('auth:sanctum');
 
-Route::put('user/edit/{user}',[UserController::class,'editProfile'])->middleware('auth:sanctum');
+Route::put('user/update/{user}', [UserController::class, 'update'])->middleware('auth:sanctum');
 
-Route::get('users/show',[UserController::class,'viewProfile']);
+Route::get('users/index', [UserController::class, 'index']);
+
+Route::delete('users/delete/{user}', [UserController::class, 'destroy']);
 
 //.
 
 
 //blog
-Route::post('blogs', [BlogController::class, 'createBlog'])->middleware('auth:sanctum');
 
-Route::put('blogs/edit/{blog}',[BlogController::class,'editBlog'])->middleware('auth:sanctum');
+Route::post('blogs', [BlogController::class, 'store'])->middleware('auth:sanctum');
 
-Route::delete('blogs/delete/{blog}',[BlogController::class,'destroyBlog'])->middleware('auth:sanctum');
+Route::get('blogs/index', [BlogController::class, 'index'])->middleware('auth:sanctum');
+
+Route::get('blogs/show', [BlogController::class, 'show'])->middleware('auth:sanctum');
+
+Route::put('blogs/update/{blog}', [BlogController::class, 'update'])->middleware('auth:sanctum');
+
+Route::delete('blogs/delete/{blog}', [BlogController::class, 'destroy'])->middleware('auth:sanctum');
 //.
 
 
 //bloglike
-Route::get('blogs/like/rank',[LikeConroller::class,'showRankLike'])->middleware('auth:sanctum');
+Route::get('blogs/like/rank', [LikeConroller::class, 'showRankLike'])->middleware('auth:sanctum');
 
-Route::post('blogs/like/{id}', [LikeConroller::class, 'likeBlog'])->middleware('auth:sanctum');
+Route::post('blogs/like/{blog}', [LikeConroller::class, 'store'])->middleware('auth:sanctum');
 
-Route::get('blogs/like/{id}', [LikeConroller::class, 'showLike'])->middleware('auth:sanctum');
+Route::delete('like/delete/{id}', [LikeConroller::class, 'destroy'])->middleware('auth:sanctum');
+
+Route::get('like/show/{blog}', [LikeConroller::class, 'show'])->middleware('auth:sanctum');
 //.
 
 //blogview
-Route::get('blogs/view/rank',[BlogViewController::class,'showRankRaeds'])->middleware('auth:sanctum');
+Route::get('blogs/view/rank', [BlogViewController::class, 'index'])->middleware('auth:sanctum');
 
-Route::post('blogs/view/{id}', [BlogViewController::class, 'blogViews'])->middleware('auth:sanctum');
+Route::post('blogs/view/{id}', [BlogViewController::class, 'store'])->middleware('auth:sanctum');
 
-Route::get('blogs/view/{id}',[BlogViewController::class,'showBlogViews'])->middleware('auth:sanctum');
+Route::get('blogs/view/{blog}', [BlogViewController::class, 'show'])->middleware('auth:sanctum');
 //.
-
-
-
-
-
-
-
-
