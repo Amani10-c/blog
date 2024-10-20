@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ViewResource extends JsonResource
+class LikeResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,9 +19,8 @@ class ViewResource extends JsonResource
             'subject' => $this->subject,
             'content' => $this->content,
             'user_id' => $this->user_id,
-            'views_count' => $this->views_count,
-            'views' => $this->views,
-            
+            'likes_count' => $this->views_count,
+            'likes' => $this->views,
 
 
         ];

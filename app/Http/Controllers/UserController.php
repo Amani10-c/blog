@@ -19,20 +19,13 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        if ($users->count() > 0) {
-            return  UserResource::collection($users->load('blog'));
-        }
+        return  UserResource::collection($users->load('blog'));
     }
-    public function update(UpdateUserRequest $request, User $user)
+
+    public function Show()
     {
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = $request->password;
-        $user->save();
-        return response()->json([
-            'status' => 200,
-            'message' => "user edit successfully"
-        ], 200);
+        $user = auth()->user();
+        return  new UserResource($user->load('blog'));
     }
     public function store(CreateUserRequest $request)
     {
@@ -41,15 +34,11 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => $request->password,
         ]);
-
-        if ($user) {
-            return response()->json([
-                'status' => 200,
-                'message' => "user created successfully"
-            ], 200);
-        }
+        return response()->json([
+            'status' => 200,
+            'message' => "user created successfully"
+        ], 200);
     }
-
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -73,15 +62,17 @@ class UserController extends Controller
         }
     }
 
-    public function Show()
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $user = auth()->user();
-        if ($user->id != Auth::id()) {
-            return response()->json([
-                'message' => 'user is not authorized'
-            ], 403);
-        }
-        return  new UserResource($user->load('blog'));
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
+        return response()->json([
+            'status' => 200,
+            'message' => "user edit successfully"
+        ], 200);
     }
 
     public function destroy(User $user)

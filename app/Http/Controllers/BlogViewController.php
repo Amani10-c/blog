@@ -10,6 +10,23 @@ use Illuminate\Http\Request;
 
 class BlogViewController extends Controller
 {
+    public function show(Blog $blog)
+    {
+        $totalRaeds = $blog->Views()->count();
+        $blog->load('Views');
+        return response()->json([
+            'blog' => new ViewResource($blog),
+            'totalRaeds' => $totalRaeds
+        ]);
+    }
+
+    public function index()
+    {
+        $views = Blog::with('Views')->withCount('Views')->get();
+        $views = $views->sortByDesc('blog_view_count')->take(10);
+        return ViewResource::collection($views->load('Views'));
+    }
+
     public function store(Request $request, $blogId)
     {
         $userId = $request->user()->id;
@@ -24,21 +41,5 @@ class BlogViewController extends Controller
             'blog_id' => $blogId,
         ]);
         return response()->json(['message' => 'View Blog successfully']);
-    }
-
-    public function show(Blog $blog)
-    {
-        $totalRaeds = $blog->Views()->count();
-        return response()->json([
-            'blog' => $blog,
-            'total_raeds' => $totalRaeds,
-        ]);
-    }
-
-    public function index()
-    {
-        $views = Blog::with('Views')->withCount('Views')->get();
-        $views = $views->sortByDesc('blog_view_count')->take(10);
-        return ViewResource::collection($views->load('Views'));
     }
 }

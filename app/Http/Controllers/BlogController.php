@@ -29,39 +29,30 @@ class BlogController extends Controller
     public function index()
     {
         $blogs = Blog::all();
-        if ($blogs->count() > 0) {
-            return BlogResource::collection($blogs->load('blogs'));
-        }
+        return BlogResource::collection($blogs->load('blogs'));
     }
 
     public function store(CreateBlogRequest $request)
     {
-        if (auth()->check()) {
-            $userId = auth()->user()->id;
-        } else {
-            return response()->json(['error' => 'User not authenticated'], 401);
-        } {
+        $userId = auth()->user()->id;
+        $blog = Blog::create([
+            'user_id' => $userId,
+            'subject' => $request->subject,
+            'content' => $request->content,
 
-            $blog = Blog::create([
-                'user_id' => $userId,
-                'subject' => $request->subject,
-                'content' => $request->content,
-
-            ]);
-            if ($blog) {
-                return response()->json([
-                    'status' => 200,
-                    'message' => "blog created successfully"
-                ], 200);
-            }
-        }
+        ]);
+        return response()->json([
+            'status' => 200,
+            'message' => "blog created successfully"
+        ], 200);
     }
 
     public function update(UpdateBlogRequest $request, Blog $blog)
     {
-        $blog->subject = $request->subject;
-        $blog->content = $request->content;
-        $blog->save();
+        $blog->update([
+            'subject' => $request->subject,
+            'content' => $request->content,
+        ]);
         return response()->json([
             'status' => 200,
             'message' => "blog edit successfully"
