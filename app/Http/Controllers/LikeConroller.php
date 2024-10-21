@@ -23,7 +23,7 @@ class likeConroller extends Controller
     $blog->load('likes');
     return response()->json([
       'blog'=>new LikeResource($blog),
-      'totalLikes'=>$totalLikes
+      'total_Likes'=>$totalLikes
     ]);
     
   }

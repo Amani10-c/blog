@@ -18,7 +18,7 @@ class BlogResource extends JsonResource
             'id'=>$this->id,
             'subject'=> $this->subject,
             'content'=> $this->content,
-            'blog' =>  BlogResource::collection($this->whenLoaded('blog')),
+            'blog' =>  BlogResource::collection($this->whenLoaded('blogs')),
 
         ];
     }

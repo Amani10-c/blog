@@ -17,12 +17,12 @@ class Like extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function blog()
+    public function blogs()
     {
         return $this->belongsTo(Blog::class);
     }
 
-    public function likeBlogs()
+    public function likes()
 {
     return $this->hasMany(Like::class);
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\UserCollection;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
-
+use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserResource;
 use App\Models\Blog;
 use App\Models\User;
@@ -19,47 +19,26 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return  UserResource::collection($users->load('blog'));
+        return  UserResource::collection($users->load('blogs'));
     }
 
     public function Show()
     {
         $user = auth()->user();
-        return  new UserResource($user->load('blog'));
+        return  new UserResource($user->load('blogs'));
     }
+
     public function store(CreateUserRequest $request)
     {
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => Hash::make($request->Password)
         ]);
         return response()->json([
             'status' => 200,
-            'message' => "user created successfully"
+            'user' => $user,
         ], 200);
-    }
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            $token = $user->createToken('auth_token')->plainTextToken;
-
-            return response()->json([
-                'message' => 'Login successful',
-                'token' => $token,
-                'user' => $user,
-            ], 200);
-        } else {
-            return response()->json([
-                'message' => 'Invalid login credentials'
-            ], 401);
-        }
     }
 
     public function update(UpdateUserRequest $request, User $user)
@@ -71,7 +50,7 @@ class UserController extends Controller
         ]);
         return response()->json([
             'status' => 200,
-            'message' => "user edit successfully"
+            'user' => $user,
         ], 200);
     }
 

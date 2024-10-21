@@ -24,7 +24,7 @@ class Blog extends Model
     }
 
 
-    public function Views(){
+    public function views(){
         return $this->belongsToMany(User::class,'blog_views','blog_id','vistor_id')->withTimestamps();
     }
 

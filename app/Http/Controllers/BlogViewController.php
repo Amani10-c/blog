@@ -10,21 +10,21 @@ use Illuminate\Http\Request;
 
 class BlogViewController extends Controller
 {
+    public function index()
+    {
+        $views = Blog::with('views')->withCount('views')->get();
+        $views = $views->sortByDesc('blog_view_count')->take(10);
+        return ViewResource::collection($views->load('views'));
+    }
+
     public function show(Blog $blog)
     {
         $totalRaeds = $blog->Views()->count();
-        $blog->load('Views');
+        $blog->load('views');
         return response()->json([
             'blog' => new ViewResource($blog),
-            'totalRaeds' => $totalRaeds
+            'total_Raeds' => $totalRaeds
         ]);
-    }
-
-    public function index()
-    {
-        $views = Blog::with('Views')->withCount('Views')->get();
-        $views = $views->sortByDesc('blog_view_count')->take(10);
-        return ViewResource::collection($views->load('Views'));
     }
 
     public function store(Request $request, $blogId)

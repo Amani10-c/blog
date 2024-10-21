@@ -17,19 +17,18 @@ use Illuminate\Support\Facades\Validator;
 class BlogController extends Controller
 {
 
+    public function index()
+    {
+        $blogs = Blog::all();
+        return BlogResource::collection($blogs->load('blogs'));
+    }
 
     public function show()
     {
         $blog = auth()->user();
         return response()->json([
-            'blog' => new BlogResource($blog->load('blog')),
+            'blog' => new BlogResource($blog->load('blogs')),
         ]);
-    }
-
-    public function index()
-    {
-        $blogs = Blog::all();
-        return BlogResource::collection($blogs->load('blogs'));
     }
 
     public function store(CreateBlogRequest $request)
@@ -43,7 +42,7 @@ class BlogController extends Controller
         ]);
         return response()->json([
             'status' => 200,
-            'message' => "blog created successfully"
+            'blog' => $blog,
         ], 200);
     }
 
@@ -55,7 +54,7 @@ class BlogController extends Controller
         ]);
         return response()->json([
             'status' => 200,
-            'message' => "blog edit successfully"
+            'blog' => $blog,
         ], 200);
     }
 

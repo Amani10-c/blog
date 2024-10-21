@@ -11,7 +11,7 @@ class BlogView extends Model
       protected $fillable = ['blog_id', 'vistor_id'];
 
 
-    public function blog()
+    public function blogs()
 {
     return $this->belongsTo(Blog::class);
 
